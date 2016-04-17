@@ -1,6 +1,6 @@
 /**
- * 
- */
+*
+*/
 package com.flatironschool.javacs;
 
 import java.util.Arrays;
@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * @author downey
- * @param <E>: Type of the elements in the List.
- *
- */
+* @author downey
+* @param <E>: Type of the elements in the List.
+*
+*/
 public class MyArrayList<E> implements List<E> {
 	int size;                    // keeps track of the number of elements
 	private E[] array;           // stores the elements
-	
+
 	/**
-	 * 
-	 */
+	*
+	*/
 	public MyArrayList() {
 		// You can't instantiate an array of T[], but you can instantiate an
 		// array of Object and then typecast it.  Details at
@@ -30,8 +30,8 @@ public class MyArrayList<E> implements List<E> {
 	}
 
 	/**
-	 * @param args
-	 */
+	* @param args
+	*/
 	public static void main(String[] args) {
 		// run a few simple tests
 		MyArrayList<Integer> mal = new MyArrayList<Integer>();
@@ -39,7 +39,7 @@ public class MyArrayList<E> implements List<E> {
 		mal.add(2);
 		mal.add(3);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
-		
+
 		mal.remove(new Integer(2));
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
@@ -51,7 +51,7 @@ public class MyArrayList<E> implements List<E> {
 			E[] bigger = (E[]) new Object[array.length * 2];
 			System.arraycopy(array, 0, bigger, 0, array.length);
 			array = bigger;
-		} 
+		}
 		array[size] = element;
 		size++;
 		return true;
@@ -62,7 +62,13 @@ public class MyArrayList<E> implements List<E> {
 		if (index < 0 || index > size) {
 			throw new IndexOutOfBoundsException();
 		}
+
 		// TODO: fill in the rest of this method
+		add (element);
+		for (int i = size - 1; i > index; i--) {
+			array[i] = array[i-1];
+		}
+		array[index] = element;
 	}
 
 	@Override
@@ -112,16 +118,24 @@ public class MyArrayList<E> implements List<E> {
 	@Override
 	public int indexOf(Object target) {
 		// TODO: fill in this method
-		return 0;
+		// if (target == null ){
+		// 	return -1;
+		// }
+		for (int i = 0; i < size; i ++) {
+			if (equals (target, array[i])) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	/** Checks whether an element of the array is the target.
-	 * 
-	 * Handles the special case that the target is null.
-	 * 
-	 * @param target
-	 * @param object
-	 */
+	*
+	* Handles the special case that the target is null.
+	*
+	* @param target
+	* @param object
+	*/
 	private boolean equals(Object target, Object element) {
 		if (target == null) {
 			return element == null;
@@ -183,7 +197,13 @@ public class MyArrayList<E> implements List<E> {
 	@Override
 	public E remove(int index) {
 		// TODO: fill in this method.
-		return null;
+		E removedElement = get(index);
+		for (int i = index; i < size-1; i++) {
+			array[i] = array[i+1];
+		}
+		size --;
+
+		return removedElement;
 	}
 
 	@Override
@@ -202,8 +222,12 @@ public class MyArrayList<E> implements List<E> {
 
 	@Override
 	public E set(int index, E element) {
-		// TODO: fill in this method.
-		return null;
+
+		E prev = get(index);
+		array[index] = element;
+		System.out.println ("prev is " + prev);
+		System.out.println ("new is " + array[index]);
+		return prev;
 	}
 
 	@Override
@@ -227,6 +251,6 @@ public class MyArrayList<E> implements List<E> {
 
 	@Override
 	public <T> T[] toArray(T[] array) {
-		throw new UnsupportedOperationException();		
+		throw new UnsupportedOperationException();
 	}
 }
